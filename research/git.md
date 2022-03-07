@@ -8,18 +8,33 @@ with a terminal or GUIs. Git has numerous commands but in this review we will ex
 ## Essential Commands
 
 *  git init
+
 	> initialize a directory to be tracked by git
+
 * git add
+
 	> add untracked/modified files to be tracked by git (it changes a file's status from untracked/modified to staged)
+
 * git status
+
 	> show the status of the current directory (distinguish between staged and untracked/modified files)
+
 * git commit
+
 	> record the staged files to history with a message
+
 * git remote add
+
 	> add a remote repository hosted by GitHub, GitLab etc.
+
 * git push
+
 	> push local changes to a remote repository
+
 * git pull
+
 	> pull remote changes to local
+
 * git log
+
 	> display the commit history with messages
