@@ -15,3 +15,13 @@ class Person(models.Model):
 
     def __str__(self):
         return self.name + ' ' + self.surname
+
+
+class WDRecord(models.Model):
+    wd_id = models.CharField(max_length=50)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return self.wd_id
