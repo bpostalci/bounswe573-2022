@@ -9,6 +9,7 @@ class Person(models.Model):
     surname = models.CharField(max_length=200)
     address = models.TextField(default='')
     birth_date = models.DateTimeField(default=timezone.now)
+    wd_records = models.ManyToManyField('WDRecord', related_name='wd_records')
 
     def publish(self):
         self.save()
