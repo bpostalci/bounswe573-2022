@@ -11,10 +11,10 @@ def main(request):
     user = None
 
     if data is not None:
-        if data['new_user'] is not None:
+        if 'new_user' in data:
             new_user = data['new_user']
 
-        if data['user'] is not None:
+        if 'user' in data:
             user = data['user']
 
     return render(request, 'edume/main.html', {'new_user': new_user, 'user': user})
