@@ -5,12 +5,11 @@ from django.utils import timezone
 class User(models.Model):
     name = models.CharField(max_length=200)
     surname = models.CharField(max_length=200)
-    email = models.EmailField(max_length=50, default="aaaa@gmail.com")
+    email = models.EmailField(max_length=50)
     birth_date = models.DateTimeField(default=timezone.now)
-    password = models.CharField(max_length=200, default="123456")
+    password = models.CharField(max_length=200)
 
     def publish(self):
-        print('yes')
         self.save()
 
     def __str__(self):

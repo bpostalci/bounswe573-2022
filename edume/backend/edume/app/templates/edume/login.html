@@ -9,12 +9,12 @@
                 {{ field.label_tag }} {{ field }}
             </div>
         {% endfor %}
-        {#        {{ form.as_p }}#}
-        <button type="submit" class="save btn btn-secondary">Save</button>
         {% if form.errors %}
             <div class="alert alert-danger">
                 {{ form.errors }}
             </div>
         {% endif %}
+        <button style="margin-top: 2%" type="submit" class="save btn btn-secondary">Create</button>
+
     </form>
 {% endblock %}

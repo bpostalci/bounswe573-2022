@@ -2,10 +2,22 @@ from django.shortcuts import render, redirect
 from django.core import validators
 # Create your views here.
 from .forms import UserForm
+from django.forms.models import model_to_dict
 
 
 def main(request):
-    return render(request, 'edume/main.html', {})
+    data = request.session.get('data')
+    new_user = None
+    user = None
+
+    if data is not None:
+        if data['new_user'] is not None:
+            new_user = data['new_user']
+
+        if data['user'] is not None:
+            user = data['user']
+
+    return render(request, 'edume/main.html', {'new_user': new_user, 'user': user})
 
 
 def user_new(request):
@@ -20,6 +32,7 @@ def user_new(request):
             user.password = request.POST.get('password')
             second_pass = request.POST.get('second_pass')
             user.save()
+            request.session['data'] = {'new_user': 'True', 'user': model_to_dict(user)}
             return redirect('main')
     else:
         form = UserForm()
