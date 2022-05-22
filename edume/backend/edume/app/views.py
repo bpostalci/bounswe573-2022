@@ -1,8 +1,6 @@
 from datetime import datetime
 
 from django.shortcuts import render, redirect
-from django.core import validators
-# Create your views here.
 from .forms import UserForm
 from django.forms.models import model_to_dict
 
@@ -11,12 +9,12 @@ from .models import Topic, User, Course
 
 def select_topics(request):
     if request.method == "POST":
-        return select_topics_submit(request)
+        return add_selected_topics(request)
     else:
-        return select_topics_view(request)
+        return view_select_topics(request)
 
 
-def select_topics_view(request):
+def view_select_topics(request):
     data = request.session.get('data')
     new_user = None
     user = None
@@ -32,7 +30,7 @@ def select_topics_view(request):
     return render(request, 'edume/select_topics.html', {'new_user': new_user, 'user': user, 'topics': topics})
 
 
-def select_topics_submit(request):
+def add_selected_topics(request):
     if 'selected_topics' in request.POST:
         selected_topics = request.POST.getlist('selected_topics')
         if selected_topics:
@@ -79,6 +77,17 @@ def user_new(request):
 
 
 def courses(request):
+    if request.method == "POST":
+        return select_a_course(request)
+    else:
+        return view_courses(request)
+
+
+def view_courses(request):
     topics = Topic.objects.filter(id__in=request.session['topics'])
     course_list = Course.objects.filter(topics__in=topics).distinct()
     return render(request, 'edume/courses.html', {'courses': course_list})
+
+
+def select_a_course(request):
+    print(request.POST['selected_course'])
