@@ -1,11 +1,6 @@
 {% extends './base.html' %}
 
 {% block content %}
-
-    {% ifequal new_user 'True' %}
-        <div class="alert alert-success">
-            Hello {{ user.name }}
-        </div>
-    {% endifequal %}
+    {% csrf_token %}
 
 {% endblock %}

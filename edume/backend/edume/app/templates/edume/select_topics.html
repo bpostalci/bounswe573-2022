@@ -1,0 +1,36 @@
+{% extends './base.html' %}
+
+{% block content %}
+    {% ifequal new_user 'True' %}
+        <div class="alert alert-success">
+            Hello {{ user.name }} to EduMe!
+        </div>
+    {% endifequal %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="container">
+            <h2>Choose topics to follow:</h2>
+            <div class="row" style="height: 200px">
+                <div class="col-md-2">
+                    <select name="selected_topics" style="height: 100%" multiple>
+                        {% for topic in topics %}
+                            <option value="{{ topic.id }}">
+                                {{ topic.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-10">
+                    <div class="alert alert-info">
+                        Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input style="margin-top: 2%;" value="Add Selected Topics" type="submit" class="save btn btn-secondary">
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

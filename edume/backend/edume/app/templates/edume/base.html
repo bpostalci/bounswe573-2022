@@ -15,6 +15,9 @@
             {% include './icons/file-earmark-plus.svg' %}
         </a>
         <h1><a href="/">EduMe</a></h1>
+        {% if user %}
+            <p style="color:white">{{ user.name }}</p>
+        {% endif %}
     </div>
 </header>
 <main class="container">

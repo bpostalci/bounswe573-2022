@@ -6,11 +6,21 @@ from django.core import validators
 from .forms import UserForm
 from django.forms.models import model_to_dict
 
+from .models import Topic, User
 
-def main(request):
+
+def select_topics(request):
+    if request.method == "POST":
+        return select_topics_submit(request)
+    else:
+        return select_topics_view(request)
+
+
+def select_topics_view(request):
     data = request.session.get('data')
     new_user = None
     user = None
+    topics = Topic.objects.filter()
 
     if data is not None:
         if 'new_user' in data:
@@ -19,7 +29,31 @@ def main(request):
         if 'user' in data:
             user = data['user']
 
-    return render(request, 'edume/main.html', {'new_user': new_user, 'user': user})
+    return render(request, 'edume/select_topics.html', {'new_user': new_user, 'user': user, 'topics': topics})
+
+
+def select_topics_submit(request):
+    if 'selected_topics' in request.POST:
+        selected_topics = request.POST.getlist('selected_topics')
+        if selected_topics:
+            user_id = request.session.get('data')['user']['id']
+            user = User.objects.get(id=user_id)
+            topics = Topic.objects.filter(id__in=selected_topics)
+            user.topics.set(topics)
+            user.save()
+
+    return redirect('main')
+
+
+def main(request):
+    data = request.session.get('data')
+    user = None
+
+    if data is not None:
+        if 'user' in data:
+            user = data['user']
+
+    return render(request, 'edume/main.html', {'user': user})
 
 
 def user_new(request):
@@ -37,7 +71,7 @@ def user_new(request):
             user.bio = request.POST.get('bio')
             user.save()
             request.session['data'] = {'new_user': 'True', 'user': model_to_dict(user)}
-            return redirect('main')
+            return redirect('select_topics')
     else:
         form = UserForm()
     return render(request, 'edume/login.html', {'form': form})

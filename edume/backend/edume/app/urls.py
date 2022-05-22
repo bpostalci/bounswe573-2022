@@ -7,4 +7,5 @@ from django.conf import settings
 urlpatterns = [
                   path('', views.main, name='main'),
                   path('user/new/', views.user_new, name='user_new'),
+                  path('select_topics/', views.select_topics, name='select_topics'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

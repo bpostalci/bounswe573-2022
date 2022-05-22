@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import *
 
 
 class UserForm(forms.ModelForm):
@@ -24,3 +24,4 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('name', 'surname', 'birth_date', 'email', 'bio', 'password')
+
