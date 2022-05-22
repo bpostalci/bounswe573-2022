@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect
 from django.core import validators
 # Create your views here.
@@ -29,8 +31,10 @@ def user_new(request):
             user.surname = request.POST.get('surname')
             user.email = request.POST.get('email')
             user.birth_date = request.POST.get('birth_date')
+            user.create_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             user.password = request.POST.get('password')
             second_pass = request.POST.get('second_pass')
+            user.bio = request.POST.get('bio')
             user.save()
             request.session['data'] = {'new_user': 'True', 'user': model_to_dict(user)}
             return redirect('main')

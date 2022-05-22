@@ -12,6 +12,7 @@ class UserForm(forms.ModelForm):
     email = forms.EmailField(max_length=50)
     password = forms.CharField(max_length=200, widget=forms.PasswordInput)
     second_password = forms.CharField(max_length=200, widget=forms.PasswordInput, label="Re-type password")
+    bio = forms.CharField(max_length=1000, widget=forms.Textarea())
 
     def clean_second_password(self):
         pass1 = self.cleaned_data.get('password')
@@ -22,4 +23,4 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('name', 'surname', 'birth_date', 'email', 'password')
+        fields = ('name', 'surname', 'birth_date', 'email', 'bio', 'password')
