@@ -86,8 +86,15 @@ def courses(request):
 def view_courses(request):
     topics = Topic.objects.filter(id__in=request.session['topics'])
     course_list = Course.objects.filter(topics__in=topics).distinct()
-    return render(request, 'edume/courses.html', {'courses': course_list})
+    return render(request, 'edume/courses.html', {'courses': course_list, 'user': request.session['data']['user']})
 
 
 def select_a_course(request):
     print(request.POST['selected_course'])
+    request.session['course_id'] = request.POST['selected_course']
+    return redirect('course')
+
+
+def course(request):
+    selected_course = Course.objects.get(id=request.session['course_id'])
+    return render(request, 'edume/course.html', {'course': selected_course, 'user': request.session['data']['user']})
