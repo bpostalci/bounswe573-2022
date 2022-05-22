@@ -6,7 +6,7 @@ from django.core import validators
 from .forms import UserForm
 from django.forms.models import model_to_dict
 
-from .models import Topic, User
+from .models import Topic, User, Course
 
 
 def select_topics(request):
@@ -41,8 +41,9 @@ def select_topics_submit(request):
             topics = Topic.objects.filter(id__in=selected_topics)
             user.topics.set(topics)
             user.save()
+            request.session['topics'] = selected_topics
 
-    return redirect('main')
+    return redirect('courses')
 
 
 def main(request):
@@ -75,3 +76,9 @@ def user_new(request):
     else:
         form = UserForm()
     return render(request, 'edume/login.html', {'form': form})
+
+
+def courses(request):
+    topics = Topic.objects.filter(id__in=request.session['topics'])
+    course_list = Course.objects.filter(topics__in=topics).distinct()
+    return render(request, 'edume/courses.html', {'courses': course_list})
