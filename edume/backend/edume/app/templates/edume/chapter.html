@@ -12,8 +12,8 @@
             </p>
         </div>
         <div class="row mt-4">
-            <h4>Chapter Video: {{ chapter.video_file_name }}</h4>
-            <video width='400' controls>
+            <h4>Chapter Video:</h4>
+            <video controls>
                 <source src='{{ MEDIA_URL }}{{ chapter.video_file }}' type='video/mp4'>
                 Your browser does not support the video tag.
             </video>

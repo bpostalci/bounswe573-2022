@@ -1,0 +1,43 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="row">
+            <h2>Questions:</h2>
+            {% for question in questions %}
+                <div style="border:1px solid black;padding: 10px;border-radius: 5px;margin-top:5%">
+                    <p style="font-size: 20px">{{ question.question }}</p>
+                    <span style="font-style: italic;font-size: 10px">Asked by {{ question.asked_user }}</span>
+
+                    {% for answer in question.answers %}
+                        <div style="margin-top:5%;margin-bottom:5%;border:1px solid black;padding: 10px;border-radius: 5px">
+                            <p style="font-size: 20px">{{ answer.answer }}</p>
+                            <span style="font-style: italic;font-size: 10px">Answered by {{ answer.answered_user }}</span>
+                        </div>
+                    {% endfor %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <label>
+                            <textarea style="height: 100px;width: 600px" name="answer"></textarea>
+                        </label>
+                        <button name="submit_answer" type="submit" value="{{ question.id }}">Submit Answer</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row" style="margin-top: 5%;margin-bottom: 5%">
+            <h2>Ask new question:</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <label>
+                    <textarea style="height: 100px;width: 600px" name="question"></textarea>
+                </label>
+                <button name="submit_question" type="submit">Submit Question</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

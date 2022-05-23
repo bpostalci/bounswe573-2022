@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from .forms import UserForm
 from django.forms.models import model_to_dict
 
-from .models import Topic, User, Course, Chapter
+from .models import Topic, User, Course, Chapter, Question, Answer
 
 
 def select_topics(request):
@@ -98,7 +98,10 @@ def course(request):
     if request.method == "POST":
         return select_a_chapter(request)
     else:
-        return view_the_course(request)
+        if request.GET.get('forum') == 'forum':
+            return redirect('forum')
+        else:
+            return view_the_course(request)
 
 
 def select_a_chapter(request):
@@ -119,3 +122,32 @@ def view_the_course(request):
 def chapter(request):
     selected_chapter = Chapter.objects.get(id=request.session['chapter_id'])
     return render(request, 'edume/chapter.html', {'chapter': selected_chapter})
+
+
+def forum(request):
+    if request.method == "POST":
+        if 'submit_answer' in request.POST:
+            answer = Answer()
+            answer.answered_user = request.session['data']['user']['name']
+            answer.answer = request.POST['answer']
+            answer.question = Question.objects.get(id=request.POST['submit_answer'])
+            answer.save()
+            return redirect('forum')
+
+        elif 'submit_question' in request.POST:
+            question = Question()
+            question.asked_user = request.session['data']['user']['name']
+            question.question = request.POST['question']
+            question.course = Course.objects.get(id=request.session['course_id'])
+            question.save()
+            return redirect('forum')
+    else:
+        return view_forum(request)
+
+
+def view_forum(request):
+    questions = Question.objects.filter(course_id=request.session['course_id'])
+    for question in questions:
+        question.answers = question.answer_set.all()
+
+    return render(request, 'edume/forum.html', {'questions': questions})
