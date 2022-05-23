@@ -11,5 +11,26 @@
                 {{ course.description }}
             </p>
         </div>
+        <div class="row mt-4">
+            <p>
+                <span style="font-weight: bold">Topics:</span>
+                {% for topic in topics %}
+                    {{ topic }},
+                {% endfor %}
+            </p>
+        </div>
+        <div class="row mt-4">
+            <h4>Chapters:</h4>
+            <form method="POST">
+                {% csrf_token %}
+                {% for chapter in chapters %}
+                    <li>
+                        <button name="selected_chapter" type="submit" value="{{ chapter.id }}">
+                            {{ chapter.title }}
+                        </button>
+                    </li>
+                {% endfor %}
+            </form>
+        </div>
     </div>
 {% endblock %}

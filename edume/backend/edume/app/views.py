@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from .forms import UserForm
 from django.forms.models import model_to_dict
 
-from .models import Topic, User, Course
+from .models import Topic, User, Course, Chapter
 
 
 def select_topics(request):
@@ -90,11 +90,32 @@ def view_courses(request):
 
 
 def select_a_course(request):
-    print(request.POST['selected_course'])
     request.session['course_id'] = request.POST['selected_course']
     return redirect('course')
 
 
 def course(request):
+    if request.method == "POST":
+        return select_a_chapter(request)
+    else:
+        return view_the_course(request)
+
+
+def select_a_chapter(request):
+    request.session['chapter_id'] = request.POST['selected_chapter']
+    return redirect('chapter')
+
+
+def view_the_course(request):
     selected_course = Course.objects.get(id=request.session['course_id'])
-    return render(request, 'edume/course.html', {'course': selected_course, 'user': request.session['data']['user']})
+    topics = selected_course.topics.all()
+    chapters = Chapter.objects.filter(course_id=request.session['course_id'])
+    return render(request, 'edume/course.html', {'course': selected_course,
+                                                 'user': request.session['data']['user'],
+                                                 'topics': topics,
+                                                 'chapters': chapters})
+
+
+def chapter(request):
+    selected_chapter = Chapter.objects.get(id=request.session['chapter_id'])
+    return render(request, 'edume/chapter.html', {'chapter': selected_chapter})

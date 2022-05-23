@@ -1,0 +1,28 @@
+{% extends './base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-2">
+            <h2>{{ chapter.title }}</h2>
+        </div>
+        <div class="row mt-4">
+            <h4>Chapter Description:</h4>
+            <p>
+                {{ chapter.description }}
+            </p>
+        </div>
+        <div class="row mt-4">
+            <h4>Chapter Video: {{ chapter.video_file_name }}</h4>
+            <video width='400' controls>
+                <source src='{{ MEDIA_URL }}{{ chapter.video_file }}' type='video/mp4'>
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="row mt-4">
+            <h4>Chapter Content:</h4>
+            <p>
+                {{ chapter.content }}
+            </p>
+        </div>
+    </div>
+{% endblock %}
